@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSlotsTable extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,14 @@ class CreateSlotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('slots', function (Blueprint $table) {
+        
+        Schema::create('users', function(Blueprint $table)
+        {
             $table->increments('id');
-            $table->string('start_time');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password', 60);
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ class CreateSlotsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('slots');
+        //
     }
 }

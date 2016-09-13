@@ -13,12 +13,17 @@ class CreateBookedSlotsTable extends Migration
     public function up()
     {
         Schema::create('booked_slots', function (Blueprint $table) {
+
+            $table->engine='InnoDB';
+
             $table->increments('id');
-            $table->integer('booking_id');
-            $table->integer('slot_id');
+            $table->integer('booking_id')->unsigned();
+            $table->integer('slot_id')->unsigned();
+            $table->timestamps();
+
             $table->foreign('booking_id')->references('id')->on('booking');
             $table->foreign('slot_id')->references('id')->on('slots');
-            $table->timestamps();
+            
         });
     }
 

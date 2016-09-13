@@ -12,5 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('app');
 });
+
+Route::get('/book', 'BookingController@book');
+
+Route::get('getHalls', 'BookingController@getHalls');
+
+Route::post('bookHalls', 'BookingController@bookHalls');
+
+Route::controllers([
+	'auth' => 'Auth\AuthController',
+	'password' => 'Auth\PasswordController',
+]);
