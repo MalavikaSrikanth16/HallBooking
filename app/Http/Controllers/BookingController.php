@@ -124,7 +124,7 @@ class BookingController extends Controller
     		$hallId = DB::table('halls')->where('name', $hall)->value('id');
 
     		// get booking id for this booking
-    		$bookingId = DB::table('booking')->where('hall_booked', $hallId)->value('id');
+    		$bookingId = DB::table('booking')->where([ ['hall_booked', $hallId], ['date', $date] ])->value('id');
 
     		// get slot id from the slots table given the slot start time
     		$slotId = DB::table('slots')->where('start_time', $time)->value('id');
