@@ -15,11 +15,14 @@ Route::get('/', function () {
     return view('app');
 });
 
+// book page
 Route::get('/book', 'BookingController@book');
-
 Route::get('getHalls', 'BookingController@getHalls');
-
 Route::post('bookHalls', 'BookingController@bookHalls');
+
+// my halls page
+Route::get('/myhalls', 'MyHallsController@myHalls');
+Route::post('/cancelHalls', 'MyHallsController@cancelHalls');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

@@ -19,7 +19,7 @@ class BookingController extends Controller
 
     public function book()
     {
-    	return view('book');
+    	return view('booking.book');
     }
 
     public function getHalls(Request $request)
@@ -70,7 +70,7 @@ class BookingController extends Controller
 
 
     	//return $times;
-    	 return view('bookHalls', compact('halls', 'location', 'times', 'date'));
+    	 return view('booking.bookHalls', compact('halls', 'location', 'times', 'date'));
 
     }
 
