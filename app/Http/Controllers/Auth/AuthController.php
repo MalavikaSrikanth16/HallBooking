@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests;
+
 class AuthController extends Controller
 {
     /*
@@ -28,8 +32,29 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    // public function postLogin(Request $request)
+    // {
+      
 
+    //   $email = $request->input('email');
+    //   $user = DB::table('users')->where('email', $email)->value('name');
+
+    // if( $user )
+    // {
+    //     if( $user =='admin') //test if is first login ..
+    //     {
+    //         $this->redirectPath = '/admin';
+    //     } else
+    //     {
+    //         $this->redirectPath = '/';
+    //     }
+    // }
+
+    protected $redirectTo = '/';
+    // //then you call the orinal login method 
+    //     return $this->login($request);
+    // }
+    
     /**
      * Create a new authentication controller instance.
      *

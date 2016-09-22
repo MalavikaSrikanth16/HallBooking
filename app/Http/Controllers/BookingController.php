@@ -34,6 +34,7 @@ class BookingController extends Controller
 
     	// Before we filter based on the bookings by other faculty we must filter based on admin
     	// ie: we must first fetch all slots of each room which have been blocked by the admin
+        
 
     	foreach($halls as $hall){
     		//echo $hall->name;

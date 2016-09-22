@@ -24,6 +24,12 @@ Route::post('bookHalls', 'BookingController@bookHalls');
 Route::get('/myhalls', 'MyHallsController@myHalls');
 Route::post('/cancelHalls', 'MyHallsController@cancelHalls');
 
+Route::get('/admin/book',function(){
+	return view('adminbooking');
+});
+Route::get('getadminhalls','AdminController@getHalls');
+Route::post('bookadminhalls','AdminController@bookHalls');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
