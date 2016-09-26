@@ -11,12 +11,12 @@
     	
     	<div class="form-group">
     		<label for="location"> Location </label>
-    		<input type="text" class="form-control" name="location" id="location" placeholder="LHC/ORION/CSE">
+    		<input type="text" class="form-control" name="location" id="location" placeholder="LHC/ORION/CSE" required>
     	</div>
 
     	<div class="form-group">
     		<label for="location"> Date </label>
-    		<input type="date" class="form-control" name="bookDate" id="bookDate">
+    		<input type="date" class="form-control" name="bookDate" id="bookDate" required>
     	</div>
 
     	<div class="form-group">
