@@ -48,19 +48,21 @@ class BookingController extends Controller
         		// get the hall id given the hall name
         		$hallId = DB::table('halls')->where('name', $hall->name)->value('id');
 
+                $bookedSlots = [];
             // filter based on slots booked by the admin
                 
                 // get start_time and end_time where start date < booking date < end date
                 $adminBooking = DB::table('adminbookings')->select('start_time', 'end_time')->where([ ['start_date' ,'<=', $date], ['end_date', '>=', $date] ])->get();
+                if(count($adminBooking)>0)
+                {
+                    // get slot ids of all slots within the above range
+                    $startSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->start_time)))->value('id');
 
-                // get slot ids of all slots within the above range
-                $startSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->start_time)))->value('id');
+                    $endSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->end_time)))->value('id');
 
-                $endSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->end_time)))->value('id');
-
-                for($i=$startSlot;$i<=$endSlot;$i++)
-                    $bookedSlots[$i-$startSlot]=$i;
-                
+                    for($i=$startSlot;$i<=$endSlot;$i++)
+                        $bookedSlots[$i-$startSlot]=$i;
+                }
             // filter based on slots booked by other faculty 
 
                 // get booking id from the booking table if the same hall has been booked by someone else on this date
