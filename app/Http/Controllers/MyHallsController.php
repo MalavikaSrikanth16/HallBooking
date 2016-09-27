@@ -75,10 +75,16 @@ class MyHallsController extends Controller
     public function cancelHalls(Request $request)
     {
 
-    	print_r($request->input('bookIds'));
+    	//print_r($request->input('bookIds'));
 
-    	// write code to cancel the selected bookings and redirect to home
+        // delete from the booked_slots table first and then from the bookings table
+        foreach($request->input('bookIds') as $bookId) {
+            DB::table('booked_slots')->where('booking_id', $bookId)->delete();
+            DB::table('booking')->where('id', $bookId)->delete();
+        }
 
+
+        return redirect('/');
 
     }
 
