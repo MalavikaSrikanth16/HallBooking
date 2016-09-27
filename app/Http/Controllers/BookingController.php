@@ -66,10 +66,14 @@ class BookingController extends Controller
             // filter based on slots booked by other faculty 
 
                 // get booking id from the booking table if the same hall has been booked by someone else on this date
-                $bookingId = DB::table('booking')->where([ ['date', $date], ['hall_booked', $hallId] ])->value('id');
+                $bookingIds = DB::table('booking')->where([ ['date', $date], ['hall_booked', $hallId] ])->get();
 
                 // get the slots booked for this booking id. bookedSlots is an array of all booked slots
-                $facultyBookedSlots = DB::table('booked_slots')->select('slot_id')->where('booking_id', $bookingId)->get();
+                $bookingidsarray = [];
+                foreach($bookingIds as $bookingId)
+                    array_push($bookingidsarray, $bookingId->id);
+
+                $facultyBookedSlots = DB::table('booked_slots')->select('slot_id')->whereIn('booking_id', $bookingidsarray)->get();
 
                 // combined array of all booked slots
 
@@ -134,7 +138,7 @@ class BookingController extends Controller
     		// booking table will contain date, hallid, prof details.
     		// slot details will be there in the booked_slots table seperately
 
-    		if(!DB::table('booking')->where([ ['hall_booked','=', $hallId], ['date', '=', $date] ])->value('id'))
+    		if(!DB::table('booking')->where([ ['hall_booked','=', $hallId], ['date', '=', $date] , ['prof_name','=',$user]])->value('id'))
     		{
     			DB::table('booking')->insert(['date' => $date, 'hall_booked' => $hallId, 'prof_name' => $user, 'webmail_id' => $mail]);
     		}
@@ -155,7 +159,7 @@ class BookingController extends Controller
     		$hallId = DB::table('halls')->where('name', $hall)->value('id');
 
     		// get booking id for this booking
-    		$bookingId = DB::table('booking')->where([ ['hall_booked', $hallId], ['date', $date] ])->value('id');
+    		$bookingId = DB::table('booking')->where([ ['hall_booked', $hallId], ['date', $date], ['prof_name','=',$user] ])->value('id');
 
     		// get slot id from the slots table given the slot start time
     		$slotId = DB::table('slots')->where('start_time', $time)->value('id');
