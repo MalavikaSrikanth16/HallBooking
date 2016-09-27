@@ -12,6 +12,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
+use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -27,51 +28,78 @@ class BookingController extends Controller
     	$location = $request->input('location');
     	$date = $request->input('bookDate');
 
-    	$halls = hall::all()->where('location', $location);
+        $bookingDate = strtotime($date);
+        $currentDate = strtotime(Carbon::now()->format('d-m-Y'));
+        // echo $bookingDate."<br>".$currenDate."<br>";
+
+        // dd((($bookingDate-$currentDate)/86400));
+        if((($bookingDate-$currentDate)/86400)<=3)
+        {
+        	$halls = hall::all()->where('location', $location);
+                
+
+        	foreach($halls as $hall){
+        		//echo $hall->name;
+
+        		// initially populate all slots as available
+        		$times[$hall->name] = array("08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", 
+        			"13:30", "14:00", "14:30","15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30");
+
+        		// get the hall id given the hall name
+        		$hallId = DB::table('halls')->where('name', $hall->name)->value('id');
+
+            // filter based on slots booked by the admin
+                
+                // get start_time and end_time where start date < booking date < end date
+                $adminBooking = DB::table('adminbookings')->select('start_time', 'end_time')->where([ ['start_date' ,'<=', $date], ['end_date', '>=', $date] ])->get();
+
+                // get slot ids of all slots within the above range
+                $startSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->start_time)))->value('id');
+
+                $endSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->end_time)))->value('id');
+
+                for($i=$startSlot;$i<=$endSlot;$i++)
+                    $bookedSlots[$i-$startSlot]=$i;
+                
+            // filter based on slots booked by other faculty 
+
+                // get booking id from the booking table if the same hall has been booked by someone else on this date
+                $bookingId = DB::table('booking')->where([ ['date', $date], ['hall_booked', $hallId] ])->value('id');
+
+                // get the slots booked for this booking id. bookedSlots is an array of all booked slots
+                $facultyBookedSlots = DB::table('booked_slots')->select('slot_id')->where('booking_id', $bookingId)->get();
+
+                // combined array of all booked slots
+
+                foreach($facultyBookedSlots as $slot)
+                    array_push($bookedSlots, $slot->slot_id);
+                // dd($bookedSlots);
+
+                // for each slot which has been booked (by both admin and faculty), remove it from the times[$hall->name] array so that it isnt displayed in the view
+        		foreach($bookedSlots as $slotId){
+
+        			// get slot time for corresponding slotid
+        			$startTime = DB::table('slots')->where('id', $slotId)->value('start_time');
+
+        			// remove those slot times from the times array which have been booked 
+        			if (($key = array_search($startTime, $times[$hall->name])) !== false) {
+        				unset($times[$hall->name][$key]);
+    				}
+
+    				$times[$hall->name] = array_values($times[$hall->name]);
+        		}
+
+        	}
 
 
-    	// TO DO:
+        	//return $times;
+        	return view('booking.bookHalls', compact('halls', 'location', 'times', 'date'));
+        }
 
-    	// Before we filter based on the bookings by other faculty we must filter based on admin
-    	// ie: we must first fetch all slots of each room which have been blocked by the admin
-        
-
-    	foreach($halls as $hall){
-    		//echo $hall->name;
-
-    		// initially populate all slots as available
-    		$times[$hall->name] = array("08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", 
-    			"13:30", "14:00", "14:30","15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30");
-
-    		// get the hall id given the hall name
-    		$hallId = DB::table('halls')->where('name', $hall->name)->value('id');
-
-    		// get booking id from the booking table if the same hall has been booked by someone else on this date
-    		$bookingId = DB::table('booking')->where([ ['date', $date], ['hall_booked', $hallId] ])->value('id');
-
-    		// get the slots booked for this booking id. bookedSlots is an array of all booked slots
-    		$bookedSlots = DB::table('booked_slots')->where('booking_id', $bookingId)->get();
-
-    		// for each slot which has been booked, remove it from the times[$hall->name] array so that it isnt displayed in the view
-    		foreach($bookedSlots as $slot){
-    			$slotId = $slot->slot_id;
-
-    			// get slot time for corresponding slotid
-    			$startTime = DB::table('slots')->where('id', $slotId)->value('start_time');
-
-    			// remove those slot times from the times array which have been booked 
-    			if (($key = array_search($startTime, $times[$hall->name])) !== false) {
-    				unset($times[$hall->name][$key]);
-				}
-
-				$times[$hall->name] = array_values($times[$hall->name]);
-    		}
-
-    	}
-
-
-    	//return $times;
-    	 return view('booking.bookHalls', compact('halls', 'location', 'times', 'date'));
+        else
+        {
+            return view('booking.book');
+        }
 
     }
 
@@ -136,6 +164,6 @@ class BookingController extends Controller
     		//echo $bookingId . ' '. $slotId;
     	}
 
-    	return redirect('/');
+    	return redirect('/myhalls');
     }
 }
