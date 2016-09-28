@@ -48,11 +48,13 @@ class BookingController extends Controller
         		// get the hall id given the hall name
         		$hallId = DB::table('halls')->where('name', $hall->name)->value('id');
 
-                $bookedSlots = [];
+                $adminBookedSlots[$hall->name] = [];
+                $facultyBookedSlots[$hall->name] = [];
             // filter based on slots booked by the admin
                 
                 // get start_time and end_time where start date < booking date < end date
-                $adminBooking = DB::table('adminbookings')->select('start_time', 'end_time')->where([ ['start_date' ,'<=', $date], ['end_date', '>=', $date] ])->get();
+                $adminBooking = DB::table('adminbookings')->select('start_time', 'end_time')->where([ ['hall_booked', $hallId ], ['start_date' ,'<=', $date], ['end_date', '>=', $date] ])->get();
+                
                 if(count($adminBooking)>0)
                 {
                     // get slot ids of all slots within the above range
@@ -61,7 +63,7 @@ class BookingController extends Controller
                     $endSlot = DB::table('slots')->where('start_time', gmdate("H:i", strtotime($adminBooking[0]->end_time)))->value('id');
 
                     for($i=$startSlot;$i<=$endSlot;$i++)
-                        $bookedSlots[$i-$startSlot]=$i;
+                        $adminBookedSlots[$hall->name][$i-$startSlot]=$i;
                 }
             // filter based on slots booked by other faculty 
 
@@ -69,37 +71,39 @@ class BookingController extends Controller
                 $bookingIds = DB::table('booking')->where([ ['date', $date], ['hall_booked', $hallId] ])->get();
 
                 // get the slots booked for this booking id. bookedSlots is an array of all booked slots
-                $bookingidsarray = [];
+                $bookingIdsArray = [];
                 foreach($bookingIds as $bookingId)
-                    array_push($bookingidsarray, $bookingId->id);
+                    array_push($bookingIdsArray, $bookingId->id);
 
-                $facultyBookedSlots = DB::table('booked_slots')->select('slot_id')->whereIn('booking_id', $bookingidsarray)->get();
+                $facultyBooking = DB::table('booked_slots')->select('slot_id')->whereIn('booking_id', $bookingIdsArray)->get();
+
 
                 // combined array of all booked slots
 
-                foreach($facultyBookedSlots as $slot)
-                    array_push($bookedSlots, $slot->slot_id);
-                // dd($bookedSlots);
+                foreach($facultyBooking as $slot)
+                    array_push($facultyBookedSlots[$hall->name], $slot->slot_id);
+                // dd($adminBookedSlots);
+                // dd($facultyBookedSlots);
 
                 // for each slot which has been booked (by both admin and faculty), remove it from the times[$hall->name] array so that it isnt displayed in the view
-        		foreach($bookedSlots as $slotId){
+        // 		foreach($bookedSlots as $slotId){
 
-        			// get slot time for corresponding slotid
-        			$startTime = DB::table('slots')->where('id', $slotId)->value('start_time');
+        // 			// get slot time for corresponding slotid
+        // 			$startTime = DB::table('slots')->where('id', $slotId)->value('start_time');
 
-        			// remove those slot times from the times array which have been booked 
-        			if (($key = array_search($startTime, $times[$hall->name])) !== false) {
-        				unset($times[$hall->name][$key]);
-    				}
+        // 			// remove those slot times from the times array which have been booked 
+        // 			if (($key = array_search($startTime, $times[$hall->name])) !== false) {
+        // 				unset($times[$hall->name][$key]);
+    				// }
 
-    				$times[$hall->name] = array_values($times[$hall->name]);
-        		}
+    				// $times[$hall->name] = array_values($times[$hall->name]);
+        // 		}
 
         	}
 
 
         	//return $times;
-        	return view('booking.bookHalls', compact('halls', 'location', 'times', 'date'));
+        	return view('booking.bookHalls', compact('halls', 'location', 'times', 'date', 'adminBookedSlots', 'facultyBookedSlots'));
         }
 
         else
