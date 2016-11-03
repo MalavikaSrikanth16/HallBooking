@@ -84,9 +84,8 @@ class MyHallsController extends Controller
         }
 
 
-        return redirect('/');
+        return redirect('/myHalls');
 
     }
-
 
 }

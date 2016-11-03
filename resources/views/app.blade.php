@@ -142,19 +142,20 @@
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
+				<!-- <ul class="nav navbar-nav">
 					<li><a href="/">Home</a></li>
-				</ul>
+				</ul> -->
 
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
 						<li><a href="/auth/login">Login</a></li>
-						<li><a href="/auth/register">Register</a></li>
+						<!-- <li><a href="/auth/register">Register</a></li> -->
 					@else
-						<li><a href="/myhalls">My Halls</a></li>
 					@if (Auth::user()->name == 'admin')
+						<li><a href="/admin/myHalls">My Halls</a></li>
 						<li><a href="/admin/book">Book</a></li>
 					@else
+						<li><a href="/myHalls">My Halls</a></li>
 						<li><a href="/book">Book</a></li>
 					@endif
 						<li class="dropdown">

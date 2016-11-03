@@ -51,6 +51,7 @@ class AuthController extends Controller
     // }
 
     protected $redirectTo = '/';
+
     // //then you call the orinal login method 
     //     return $this->login($request);
     // }

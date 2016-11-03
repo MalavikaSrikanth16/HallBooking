@@ -21,14 +21,20 @@ Route::get('getHalls', 'BookingController@getHalls');
 Route::post('bookHalls', 'BookingController@bookHalls');
 
 // my halls page
-Route::get('/myhalls', 'MyHallsController@myHalls');
+Route::get('/myHalls', 'MyHallsController@myHalls');
 Route::post('/cancelHalls', 'MyHallsController@cancelHalls');
 
+
 Route::get('/admin/book',function(){
-	return view('adminbooking');
+	return view('adminBooking');
 });
+
 Route::get('getadminhalls','AdminController@getHalls');
 Route::post('bookadminhalls','AdminController@bookHalls');
+
+// my halls page for the admin
+Route::get('/admin/myHalls', 'AdminController@myHalls');
+Route::post('/admin/cancelHalls', 'AdminController@cancelHalls');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
