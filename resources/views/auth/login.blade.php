@@ -35,7 +35,7 @@
 							</div>
 						</div>
 
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<div class="checkbox">
 									<label>
@@ -43,7 +43,7 @@
 									</label>
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
@@ -51,7 +51,7 @@
 									Login
 								</button>
 
-								<a href="/password/email">Forgot Your Password?</a>
+								<!-- <a href="/password/email">Forgot Your Password?</a> -->
 							</div>
 						</div>
 					</form>

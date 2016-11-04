@@ -108,7 +108,7 @@ class BookingController extends Controller
 
         else
         {
-            return view('booking.book');
+            return view('booking.book')->with('message', 'Halls can be booked only three days prior. Please change the date or book at a later time.');
         }
 
     }
@@ -174,6 +174,7 @@ class BookingController extends Controller
     		//echo $bookingId . ' '. $slotId;
     	}
 
-    	return redirect('/myhalls');
+
+    	return redirect('/myHalls');
     }
 }

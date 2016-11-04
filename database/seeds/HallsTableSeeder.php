@@ -12,12 +12,13 @@ class HallsTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('halls')->delete();
     	$halls = array(array("CS301", "CSE"), 
     				array("CS302", "CSE"),
     				array("LH101", "LHC"),
     				array("LH102", "LHC"),
-    				array("NG01", "Orion"),
-    				array("NG02", "Orion"));
+    				array("NG01", "ORION"),
+    				array("NG02", "ORION"));
         
         for($i=0;$i<count($halls);$i++)
         {

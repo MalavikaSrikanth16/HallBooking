@@ -6,12 +6,20 @@
 	@if (Auth::guest())
 		<h3> Please <a href="/auth/login"> Login </a> first </h3>
 	@else
+    
+    <p align="center"><strong>{{ $message or ' ' }}</strong></p>
 
 	{!! Form::open(array('url' => 'getHalls', 'method' => 'GET')) !!}
     	
     	<div class="form-group">
     		<label for="location"> Location </label>
-    		<input type="text" class="form-control" name="location" id="location" placeholder="LHC/ORION/CSE" required>
+            <select class="form-control" name="location" id="location" required> 
+            <option value="" selected disabled>LHC/ORION/CSE</option>
+            <option>LHC</option>
+            <option>ORION</option>
+            <option>CSE</option>
+            </select>
+    		<!-- <input type="text" class="form-control" name="location" id="location" placeholder="LHC/ORION/CSE" required> -->
     	</div>
 
     	<div class="form-group">
