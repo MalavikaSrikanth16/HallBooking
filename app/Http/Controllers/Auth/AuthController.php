@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 
+// use App\Session;
+
 class AuthController extends Controller
 {
     /*
@@ -33,28 +35,56 @@ class AuthController extends Controller
      * @var string
      */
     public function postLogin(Request $request)
-    {
-      
+    {    
 
-        $email = $request->input('email');
-        $user = DB::table('users')->where('email', $email)->value('name');
+        // if( $user =='admin') //test if is first login ..
+        // {
+        //     $this->redirectPath = '/admin/myHalls';
+        // } else
+        // {
+        //     $this->redirectPath = '/myHalls';
+        // }
 
-        if( $user )
+        $email = $request->get('email'); 
+        $password=$request->get('password');
+        
+        if( $email == 'admin@admin.com' )
+        {            
+            $user = DB::table('users')->where('email', $email)->value('name');
+
+            $request->session()->put('user', $user);
+            $request->session()->put('email', $email);
+            
+            $this->redirectPath = '/admin/myHalls';
+        
+        }
+        else
         {
-            if( $user =='admin') //test if is first login ..
+            $user = str_replace("@nitt.edu", "", $email);
+            $shellcmd = "python2 nitt_imap_login.py ".$user." ".$password;
+            $imap = shell_exec($shellcmd);
+            if($imap == 1)
+            {   
+                // dd($user." ".$imap);
+                $request->session()->put('user', $user);
+                $request->session()->put('email', $email);
+
+                return redirect()->action('MyHallsController@myHalls'); 
+                // $this->redirectPath = '/myHalls';
+            }
+            else
             {
-                $this->redirectPath = '/admin/myHalls';
-            } else
-            {
-                $this->redirectPath = '/myHalls';
+                $this->redirectPath = '/';
+                // return redirect()->route('/', ['message' => '<font color="red">Incorrect username or password</font>']);
             }
         }
 
         // protected $redirectTo = '/';
-
+        
         //then you call the orinal login method 
         return $this->login($request);
     }
+
     
     /**
      * Create a new authentication controller instance.

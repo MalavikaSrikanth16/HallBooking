@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 // book page
 Route::get('/book', 'BookingController@book');
-Route::get('getHalls', 'BookingController@getHalls');
-Route::post('bookHalls', 'BookingController@bookHalls');
+Route::get('/getHalls', 'BookingController@getHalls');
+Route::post('/bookHalls', 'BookingController@bookHalls');
 
 // my halls page
 Route::get('/myHalls', 'MyHallsController@myHalls');

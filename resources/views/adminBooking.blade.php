@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-	@if (Auth::guest())
+	@if (!session()->has('user'))
 		<h3> Please <a href="/auth/login"> Login </a> first </h3>
 	@else
 
