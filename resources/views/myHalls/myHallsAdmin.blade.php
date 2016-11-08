@@ -6,7 +6,7 @@
 
 	<h1> My halls </h1>
 
-	{!! Form::open(array('url' => 'cancelHalls', 'method' => 'POST')) !!}
+	{!! Form::open(array('url' => 'admin/cancelHalls', 'method' => 'POST')) !!}
 
 		<div class="form-group">
 			<table class="table table-bordered">
@@ -14,8 +14,10 @@
 					<tr> 
 						<th> Index </th>
 						<th> Hall Name </th>
-						<th> Date </th>
-						<th> Slot Start Times </th>
+						<th> Start Date </th>
+						<th> End Date </th>
+						<th> Slot Start Time </th>
+						<th> Slot End Time </th>
 						<th> Cancel </th>
 					</tr>
 				</thead>
@@ -25,12 +27,11 @@
 						<tr>
 							<td> {{ $key+1 }}</td>
 							<td> {{ $value->hallName }}</td>
-							<td> {{ $value->date }} </td>
-							<td> 
-								@foreach($value->slots as $slot)
-									{{ $slotMap[$slot->slot_id]	 }} ,
-								@endforeach
-							</td>
+							<td> {{ $value->startDate }} </td>
+							<td> {{ $value->endDate }} </td>
+							<td> {{ $value->startTime }} </td>
+							<td> {{ $value->endTime }} </td>
+							
 							<td>
 								<input type="checkbox" class="form-control" name="bookIds[]" value="{{ $value->bookingId }}">
 							</td>

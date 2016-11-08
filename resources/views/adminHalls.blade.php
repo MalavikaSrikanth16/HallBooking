@@ -2,6 +2,8 @@
 
 @section('content')
 
+    <p align="center"><strong>{{ $message or ' ' }}</strong></p>
+    
     {!! Form::open(array('url' => 'bookadminhalls', 'method' => 'POST')) !!}
 
         <div class="container">    

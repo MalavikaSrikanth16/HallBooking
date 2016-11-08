@@ -32,28 +32,29 @@ class AuthController extends Controller
      *
      * @var string
      */
-    // public function postLogin(Request $request)
-    // {
+    public function postLogin(Request $request)
+    {
       
 
-    //   $email = $request->input('email');
-    //   $user = DB::table('users')->where('email', $email)->value('name');
+        $email = $request->input('email');
+        $user = DB::table('users')->where('email', $email)->value('name');
 
-    // if( $user )
-    // {
-    //     if( $user =='admin') //test if is first login ..
-    //     {
-    //         $this->redirectPath = '/admin';
-    //     } else
-    //     {
-    //         $this->redirectPath = '/';
-    //     }
-    // }
+        if( $user )
+        {
+            if( $user =='admin') //test if is first login ..
+            {
+                $this->redirectPath = '/admin/myHalls';
+            } else
+            {
+                $this->redirectPath = '/myHalls';
+            }
+        }
 
-    protected $redirectTo = '/';
-    // //then you call the orinal login method 
-    //     return $this->login($request);
-    // }
+        // protected $redirectTo = '/';
+
+        //then you call the orinal login method 
+        return $this->login($request);
+    }
     
     /**
      * Create a new authentication controller instance.
