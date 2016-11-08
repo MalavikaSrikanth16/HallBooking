@@ -48,6 +48,7 @@ class AuthController extends Controller
         $email = $request->get('email'); 
         $password=$request->get('password');
         
+        // temporary check
         if( $email == 'admin@admin.com' )
         {            
             $user = DB::table('users')->where('email', $email)->value('name');

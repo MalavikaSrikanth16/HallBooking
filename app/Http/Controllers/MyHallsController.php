@@ -33,7 +33,7 @@ class MyHallsController extends Controller
     	$tableRows = array();
 
         // $userMail = Auth::user()->email;
-    	$userMail = session('email');
+    	$userMail = session()->get('email');
 
     	//get all bookings of the authorized user based on mail
     	$bookings = booking::all()->where('webmail_id', $userMail);
