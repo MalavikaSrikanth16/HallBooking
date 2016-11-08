@@ -119,8 +119,11 @@ class BookingController extends Controller
 
     	$slots = $request->input('slot');
     	$date = $request->input('date');
-    	$user = Auth::user()->name;
-    	$mail = Auth::user()->email;
+        // $user = Auth::user()->name;
+    	// $mail = Auth::user()->email;
+        $user = session()->get('user');
+        $mail = session()->get('email');
+        dd($user." ".$mail);
 
     	// each slot is of the format 'LH01,17:00'
     	// suppose the prof bookes from 5pm-6pm on the given date in 2 halls LH01 and LH02
