@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use Carbon\Carbon;
 
+// use App\Session;
+
 class AdminRow
 {
     public $startDate, $endDate, $hallName, $slotStartTime, $slotEndTime, $bookingId;
@@ -87,7 +89,9 @@ class AdminController extends Controller
 
         $tableRows = array();
 
+        // dd(Auth::user());
         $userName = Auth::user()->name;
+        // $userName = Session::get('username');
 
         // $userMail = DB::table('users')->where('name', $userName)->value('email');
         // dd($userMail);
