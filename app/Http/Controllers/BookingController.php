@@ -123,7 +123,7 @@ class BookingController extends Controller
     	// $mail = Auth::user()->email;
         $user = session()->get('user');
         $mail = session()->get('email');
-        dd($user." ".$mail);
+        //dd($user." ".$mail);
 
     	// each slot is of the format 'LH01,17:00'
     	// suppose the prof bookes from 5pm-6pm on the given date in 2 halls LH01 and LH02
