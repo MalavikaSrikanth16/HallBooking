@@ -2,7 +2,7 @@
 
 @section('content')
 
-	{!! Form::open(array('url' => 'bookHalls', 'method' => 'POST')) !!}
+	{!! Form::open(array('action' => 'BookingController@bookHalls', 'method' => 'POST')) !!}
 <style>
 #adminbooked{
 	background-color: red;

@@ -6,7 +6,7 @@
 
 	<h1> My halls </h1>
 
-	{!! Form::open(array('url' => 'admin/cancelHalls', 'method' => 'POST')) !!}
+	{!! Form::open(array('action' => 'AdminController@cancelHalls', 'method' => 'POST')) !!}
 
 		<div class="form-group">
 			<table class="table table-bordered">

@@ -9,7 +9,7 @@
     
     <p align="center"><strong>{{ $message or ' ' }}</strong></p>
 
-	{!! Form::open(array('url' => 'getHalls', 'method' => 'GET')) !!}
+	{!! Form::open(array('action' => 'BookingController@getHalls', 'method' => 'GET')) !!}
     	
     	<div class="form-group">
     		<label for="location"> Location </label>

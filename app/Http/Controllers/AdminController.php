@@ -74,7 +74,7 @@ class AdminController extends Controller
         else
         {
         	DB::table('adminbookings')->insert(['hall_booked' => $hallid, 'admin_username' => $user, 'start_date'=> $startdate, 'end_date' => $enddate,'start_time'=>$starttime,'end_time'=>$endtime]);
-            return redirect('/admin/myHalls');
+            return redirect()->action('AdminController@myHalls');
         }
         
     }
@@ -90,8 +90,8 @@ class AdminController extends Controller
         $tableRows = array();
 
         // dd(Auth::user());
-        $userName = Auth::user()->name;
-        // $userName = Session::get('username');
+         $userName = Auth::user()->name;
+        //$userName = session()->get('username');
 
         // $userMail = DB::table('users')->where('name', $userName)->value('email');
         // dd($userMail);
@@ -151,7 +151,8 @@ class AdminController extends Controller
         }
 
 
-        return redirect('/admin/myHalls');
+        return redirect()->action('AdminController@myHalls');
+
 
     }
 }
