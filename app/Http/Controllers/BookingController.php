@@ -178,6 +178,6 @@ class BookingController extends Controller
     	}
 
 
-    	return redirect('/myHalls');
+    	return redirect()->action('MyHallsController@myHalls');
     }
 }

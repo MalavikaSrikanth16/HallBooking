@@ -52,12 +52,13 @@ class AuthController extends Controller
         if( $email == 'admin@admin.com' )
         {            
             $user = DB::table('users')->where('email', $email)->value('name');
-
+            //Set session in AuthenticateUsers.php
             $request->session()->put('user', $user);
             $request->session()->put('email', $email);
             
             $this->redirectPath = '/admin/myHalls';
-        
+            // return redirect()->action('AdminController@myHalls'); 
+
         }
         else
         {
@@ -75,7 +76,9 @@ class AuthController extends Controller
             }
             else
             {
-                $this->redirectPath = '/';
+               // $this->redirectPath = '/';
+                    return view('auth/login');
+
                 // return redirect()->route('/', ['message' => '<font color="red">Incorrect username or password</font>']);
             }
         }

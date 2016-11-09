@@ -4,7 +4,7 @@
 
     <p align="center"><strong>{{ $message or ' ' }}</strong></p>
     
-    {!! Form::open(array('url' => 'bookadminhalls', 'method' => 'POST')) !!}
+    {!! Form::open(array('action' => 'AdminController@bookHalls', 'method' => 'POST')) !!}
 
         <div class="container">    
         <div class="form-group">  

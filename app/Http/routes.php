@@ -29,8 +29,8 @@ Route::get('/admin/book',function(){
 	return view('adminBooking');
 });
 
-Route::get('getadminhalls','AdminController@getHalls');
-Route::post('bookadminhalls','AdminController@bookHalls');
+Route::get('getAdminHalls','AdminController@getHalls');
+Route::post('bookAdminHalls','AdminController@bookHalls');
 
 // my halls page for the admin
 Route::get('/admin/myHalls', 'AdminController@myHalls');
