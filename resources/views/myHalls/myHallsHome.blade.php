@@ -28,7 +28,7 @@
 							<td> {{ $value->date }} </td>
 							<td> 
 								@foreach($value->slots as $slot)
-									{{ $slotMap[$slot->slot_id]	 }} ,
+									{{ $slotMap[$slot->slot_id-1]	 }} ,
 								@endforeach
 							</td>
 							<td>
